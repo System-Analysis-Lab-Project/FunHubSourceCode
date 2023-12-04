@@ -1,0 +1,66 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore log files
+logs/
+*.log
+
+# Ignore npm debug log
+npm-debug.log
+
+# Ignore yarn errors file
+.yarn-error.log
+
+# Ignore local configuration
+.env
+
+# Ignore dependency directories
+/jspm_packages/
+/bower_components/
+
+# Ignore build artifacts and files
+/dist/
+/out/
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore WebStorm settings
+.idea/
+
+# Ignore Sublime Text settings
+.sublime-project
+.sublime-workspace
+
+# Ignore macOS metadata
+.DS_Store
+
+# Ignore SQLite database files
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+
+# Ignore test coverage directories
+/coverage/
+
+# Ignore .bak files
+*.bak
+
+# Ignore .log files
+*.log
+
+# Ignore .swp files
+*.swp
+
+# Ignore .swo files
+*.swo
+
+# Ignore .swn files
+*.swn
+
+# Ignore .swm files
+*.swm
+
+# Ignore .swo files
+*.swo
