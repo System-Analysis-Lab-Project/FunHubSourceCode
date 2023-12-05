@@ -6,6 +6,7 @@ const userRoles = require("../utils/userRolels");
 const mongoose = require('mongoose')
 
 module.exports.signUp = async (req, res) => {
+    try{
     let {firstname,lastname, email, password} = req.body;
     password = bcrypt.hashSync(password + config.password, parseInt(config.salt))
     const e = await User.find({email})
@@ -30,6 +31,9 @@ module.exports.signUp = async (req, res) => {
         console.log(err.message)
         return res.status(401).json({error:err.message})
     })
+    }catch(err){
+        return res.status(400).json({err: err.message})
+    }
 }
 
 module.exports.get_users = async (req, res) => {

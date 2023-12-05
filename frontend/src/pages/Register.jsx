@@ -33,7 +33,7 @@ function Register() {
       values.lastname =
         values.lastname.charAt(0).toUpperCase() + values.lastname.slice(1);
 
-      await axios.post("http://localhost:3000/user/register", values);
+      await axios.post("http://localhost:3000/user/signup", values);
 
       return navigate("/login");
     } catch (err) {
