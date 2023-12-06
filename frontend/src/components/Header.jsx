@@ -1,18 +1,5 @@
 import { Link } from "react-router-dom";
-// const navLinks = [
-//   {
-//     id: "/",
-//     title: "Home",
-//   },
-//   {
-//     id: "/products",
-//     title: "Shop",
-//   },
-//   {
-//     id: "/cart",
-//     title: "Cart",
-//   },
-// ];
+
 export default function Header() {
   return (
     <header className="antialiased">
