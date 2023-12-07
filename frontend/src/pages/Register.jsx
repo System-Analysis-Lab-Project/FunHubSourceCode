@@ -27,7 +27,7 @@ function Register() {
   const sp = new URLSearchParams(search);
   const redirect = sp.get("redirect") || "/";
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo?.token) {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
@@ -35,13 +35,13 @@ function Register() {
   const validateName = (value) => {
     // Validate that the input contains only letters and no whitespace
     const isValid = /^[a-zA-Z]+$/.test(value);
-    return isValid || "Invalid input";
+    return isValid || "the input must contains only letters and no whitespace";
   };
 
   const validateEmail = (value) => {
     // Validate that the input is a valid email and contains no whitespace
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-    return isValid || "Invalid email address";
+    return isValid || "Invalid email address, whitespace isn't allowed";
   };
   const onSubmit = async (values) => {
     try {
