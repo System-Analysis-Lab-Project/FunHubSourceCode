@@ -1,4 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Header() {
   return (
@@ -23,7 +25,7 @@ export default function Header() {
               <div className="relative mt-1 lg:w-96">
                 <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                   <svg
-                    className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                    className="w-4 h-4 text-gray-500 "
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -40,7 +42,7 @@ export default function Header() {
                   type="text"
                   name="email"
                   id="topbar-search"
-                  className="bg-[#1C1E2D] text-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  className="bg-[#1C1E2D] text-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
                   placeholder="Search"
                 />
               </div>
@@ -62,14 +64,6 @@ export default function Header() {
             >
               <span className="relative text-sm font-medium w-fit block after:block after:content-[''] after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left text-white after:bg-white">
                 Shop
-              </span>
-            </Link>
-            <Link
-              to="/products"
-              className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-[#242635]"
-            >
-              <span className="relative text-sm font-medium w-fit block after:block after:content-[''] after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left text-white after:bg-white">
-                New Releases
               </span>
             </Link>
           </div>
@@ -100,6 +94,68 @@ function CartButton() {
   );
 }
 function UserHamburger() {
+  const [showProfile, setShowProfile] = useState(false);
+  const btnRef = useRef();
+
+  useEffect(() => {
+    const closeDropDown = (e) => {
+      if (!btnRef?.current?.contains(e.target)) {
+        setShowProfile(false);
+      }
+    };
+    document.addEventListener("click", closeDropDown);
+
+    return () => document.removeEventListener("click", closeDropDown);
+  }, [setShowProfile]);
+  const { userInfo } = useSelector((state) => state.auth);
+  console.log(userInfo);
+  if (userInfo?.token) {
+    return (
+      <>
+        <div className="flex cursor-pointer items-center justify-center gap-x-1 rounded-md py-2 px-4">
+          <div className="relative z-40">
+            <button
+              ref={btnRef}
+              onClick={() => setShowProfile((prev) => !prev)}
+              className="flex items-center justify-center  rounded-full overflow-hidden focus:outline-none"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-gray-500"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+              <span className="text-sm font-medium text-white ml-1">
+                {userInfo?.firstname} {userInfo?.lastname}
+              </span>
+            </button>
+
+            {showProfile && (
+              <div className="absolute right-0 w-40 mt-2 py-2 bg-white border rounded shadow-xl">
+                <Link
+                  to="/profile"
+                  className="transition-colors duration-200 block px-4 py-2 text-normal text-gray-900 rounded hover:bg-purple-500 hover:text-white"
+                >
+                  Profile
+                </Link>
+                <div className="py-2">
+                  <hr></hr>
+                </div>
+                <button
+                  // onClick={handleLogout}
+                  className="transition-colors text-left w-full duration-200 block px-4 py-2 text-normal text-gray-900 rounded hover:bg-purple-500 hover:text-white"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </>
+    );
+  }
   return (
     <>
       <Link to="/register">

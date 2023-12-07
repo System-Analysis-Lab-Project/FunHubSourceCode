@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../slices/userApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
-// import {CustomSpinner} from "../components/CustomSpinner"
+import CustomSpinner from "../components/CustomSpinner";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +22,7 @@ function Login() {
   const [login, { isLoading }] = useLoginMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
-
+  console.log(userInfo);
   const { search, state } = useLocation();
 
   const sp = new URLSearchParams(search);
@@ -38,7 +38,8 @@ function Login() {
     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
-      const user = res.data;
+      const user = res._doc;
+      console.log(user);
       dispatch(setCredentials({ ...user }));
       navigate(redirect);
     } catch (err) {
@@ -107,7 +108,7 @@ function Login() {
             }}
           />
         </div>
-
+        {isLoading && <CustomSpinner />}
         <Button
           className="mt-6 bg-[#151725] hover:bg-[#151729]"
           fullWidth

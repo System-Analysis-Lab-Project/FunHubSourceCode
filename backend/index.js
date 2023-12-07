@@ -4,14 +4,22 @@ const cors = require("cors");
 const config = require("./config");
 const router = require("./routers/index");
 const cookieParser = require("cookie-parser");
-app.use(cookieParser());
+
 const app = express();
+app.use(cookieParser());
+
 mongoose
   .connect(config.mongo_url)
   .then(() => console.log("database connected"))
   .catch((err) => console.log(err));
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(router);
 app.get("/", (req, res) => {
