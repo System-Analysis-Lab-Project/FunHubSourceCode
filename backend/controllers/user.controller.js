@@ -6,14 +6,15 @@ const userRoles = require("../utils/userRolels");
 const mongoose = require('mongoose')
 
 module.exports.signUp = async (req, res) => {
-    try{
-    let {firstname,lastname, email, password} = req.body;
+    let {firstname,lastname, email, password, role} = req.body;
     password = bcrypt.hashSync(password + config.password, parseInt(config.salt))
     const e = await User.find({email})
     if(e.length !== 0){
         return res.json("user found please login");
     }
-    const user = new User({firstname,lastname, email, password})
+    
+    role = role || userRoles.USER
+    const user = new User({firstname,lastname, email, password, role})
 
     const token = await jwt({
         email: user.email,
@@ -23,7 +24,6 @@ module.exports.signUp = async (req, res) => {
         role: user.role,
       });
     user.token = token
-    
     await user.save().then(e => {
         e.password = undefined
         return res.status(200).json(e)
@@ -31,9 +31,6 @@ module.exports.signUp = async (req, res) => {
         console.log(err.message)
         return res.status(401).json({error:err.message})
     })
-    }catch(err){
-        return res.status(400).json({err: err.message})
-    }
 }
 
 module.exports.get_users = async (req, res) => {
@@ -53,7 +50,7 @@ module.exports.login = async (req, res) => {
         }else {
             const iseq = bcrypt.compareSync(`${password}${config.password}`, e[0].password)
             e[0].password = undefined
-            const user = {id: e[0]._id, role: e[0].role, email:e[0].email}
+            const user = {id: e[0]._id, role: e[0].role, email:e[0].email, firstname : e[0].firstname, lastname : e[0].lastname}
             const token = jwt(user, config.password, {expiresIn: '30d'})
             if(!iseq){
                 return res.json("passowrd incorrect")
