@@ -4,8 +4,10 @@ const cors = require("cors");
 const config = require("./config");
 const router = require("./routers/index");
 const cookieParser = require("cookie-parser");
-app.use(cookieParser());
+
 const app = express();
+app.use(cookieParser());
+
 mongoose
   .connect(config.mongo_url)
   .then(() => console.log("database connected"))
