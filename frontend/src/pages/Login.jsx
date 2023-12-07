@@ -22,14 +22,13 @@ function Login() {
   const [login, { isLoading }] = useLoginMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
-  console.log(userInfo);
-  const { search, state } = useLocation();
+  const { search } = useLocation();
 
   const sp = new URLSearchParams(search);
   const redirect = sp.get("redirect") || "/";
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo?.token) {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
@@ -61,7 +60,6 @@ function Login() {
       <Typography color="gray" className="mt-1 text-white font-normal">
         Welcome back!
       </Typography>
-      {state && <p className="text-red-500 text-xs italic">{state.message}</p>}
       <form
         onSubmit={submitHandler}
         className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"

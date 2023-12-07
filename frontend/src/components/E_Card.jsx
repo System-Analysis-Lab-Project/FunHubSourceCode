@@ -13,15 +13,16 @@ import { RatingStars } from "./RatingStars";
 export default function E_Card({ product, id }) {
   const { image, name, price, description, rating, numReviews, countInStock } =
     product;
+
   const showReviewsText = true;
   return (
     <>
-      <Card className="w-72 bg-white m-auto shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl dark:bg-[#151725]">
+      <Card className="w-72  m-auto shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl bg-[#151725]">
         <Link to={`/products/${id}`}>
           <CardHeader
             shadow={false}
             floated={false}
-            className="h-100 dark:bg-[#242635]"
+            className="h-100 bg-[#242635]"
           >
             <img
               src={image}
@@ -31,15 +32,12 @@ export default function E_Card({ product, id }) {
           </CardHeader>
           <CardBody>
             <div className="mb-2 flex items-center justify-between">
-              <Typography
-                color="blue-gray"
-                className="font-medium dark:text-white"
-              >
+              <Typography color="blue-gray" className="font-medium text-white">
                 {name}
               </Typography>
               <Typography
                 color="blue-gray"
-                className="font-medium ml-6 dark:text-white"
+                className="font-medium ml-6 text-white"
               >
                 ${price}
               </Typography>
@@ -51,7 +49,7 @@ export default function E_Card({ product, id }) {
               <Typography
                 variant="small"
                 color="gray"
-                className="font-normal opacity-75 dark:text-white"
+                className="font-normal opacity-75 text-white"
               >
                 {description}
               </Typography>
@@ -67,7 +65,7 @@ export default function E_Card({ product, id }) {
           <Button
             ripple={false}
             fullWidth={true}
-            className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100 dark:bg-blue-500 dark:text-white dark:hover:bg-blue-700"
+            className=" shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100 bg-blue-500 text-white hover:bg-blue-700"
             disabled={!countInStock}
           >
             Add to Cart

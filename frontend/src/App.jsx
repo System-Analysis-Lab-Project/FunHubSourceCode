@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Products from "./pages/products/Products";
+import ProductDetails from "./pages/products/ProductDetails";
 import Error from "./pages/Error";
 import NotFound from "./pages/NotFound";
 
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path="products" element={<Products />} />
+      <Route path="products/:id" element={<ProductDetails />} />
       <Route path="*" element={<NotFound />} />
     </Route>
   )
