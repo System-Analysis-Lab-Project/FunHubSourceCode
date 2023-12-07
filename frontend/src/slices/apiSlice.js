@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001",
+    baseUrl: "http://localhost:3000",
     prepareHeaders: (headers, { getState, endpoint }) => {
       if (getState().auth.userInfo) {
         const user = getState().auth.userInfo;

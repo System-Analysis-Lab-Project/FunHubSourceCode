@@ -9,13 +9,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    register: builder.mutation({
-      query: (data) => ({
-        url: "http://localhost:3000/user/signup",
-        method: "POST",
-        body: data,
-      }),
-    }),
   }),
 });
 
