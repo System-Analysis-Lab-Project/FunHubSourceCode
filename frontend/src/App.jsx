@@ -12,6 +12,7 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Products from "./pages/products/Products";
 import Error from "./pages/Error";
 import NotFound from "./pages/NotFound";
 
@@ -21,7 +22,7 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
-
+      <Route path="products" element={<Products />} />
       <Route path="*" element={<NotFound />} />
     </Route>
   )
