@@ -1,8 +1,11 @@
+import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import CustomSpinner from "../../components/CustomSpinner";
 export default function CartCheckout({ subs }) {
   const { userInfo } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
   const values = {
     orderItems: subs.cardItems,
     itemsPrice: subs.itemsPrice,
@@ -11,15 +14,18 @@ export default function CartCheckout({ subs }) {
   };
   async function handleOrder() {
     try {
+      setLoading(true);
       await axios.post("http://localhost:3000/order/addOrder", values, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
       });
+      setLoading(false);
       toast.success("Your order placed successfully");
     } catch (err) {
       console.log(err);
+      setLoading(false);
       toast.error("Something went wrong");
     }
   }
@@ -39,6 +45,7 @@ export default function CartCheckout({ subs }) {
           </p>
         </div>
       </div>
+      {loading && <CustomSpinner />}
       <button
         onClick={handleOrder}
         className="block text-center mt-6 w-full rounded-md  py-1.5 font-semibold  bg-blue-500 text-white hover:bg-blue-700"

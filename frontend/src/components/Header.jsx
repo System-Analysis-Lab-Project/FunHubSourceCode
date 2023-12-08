@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../slices/authSlice";
+import { resetCart, clearCartItems } from "../slices/cartSlice";
 export default function Header() {
   return (
     <header className="antialiased">
@@ -98,7 +99,19 @@ function CartButton() {
 function UserHamburger() {
   const [showProfile, setShowProfile] = useState(false);
   const btnRef = useRef();
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleLogout = async () => {
+    try {
+      dispatch(logout());
+      dispatch(resetCart());
+      dispatch(clearCartItems());
+      navigate("/");
+      setShowProfile(false);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   useEffect(() => {
     const closeDropDown = (e) => {
       if (!btnRef?.current?.contains(e.target)) {
@@ -146,7 +159,7 @@ function UserHamburger() {
                   <hr></hr>
                 </div>
                 <button
-                  // onClick={handleLogout}
+                  onClick={handleLogout}
                   className="transition-colors text-left w-full duration-200 block px-4 py-2 text-normal text-gray-900 rounded hover:bg-purple-500 hover:text-white"
                 >
                   Logout
