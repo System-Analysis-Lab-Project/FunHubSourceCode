@@ -10,7 +10,7 @@ module.exports.signUp = async (req, res) => {
   password = bcrypt.hashSync(password + config.password, parseInt(config.salt));
   const e = await User.find({ email });
   if (e.length !== 0) {
-    return res.status(409).json({ message: "User found. Please login." });
+    return res.status(409).json({ message: "User found. Please Try another e-mail." });
   }
 
   role = role || userRoles.USER;
