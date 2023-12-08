@@ -3,75 +3,111 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../slices/authSlice";
 import { resetCart, clearCartItems } from "../slices/cartSlice";
+import axios from "axios";
+import SearchResults from "./SearchResults";
 export default function Header() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState(null);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (searchQuery === "") return;
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/product/search",
+        {
+          name: searchQuery,
+        }
+      );
+      setSearchResults(response.data);
+    } catch (error) {
+      console.error(
+        "Error during search:",
+        error.response?.data || error.message
+      );
+    }
+  };
 
   return (
-    <header className="antialiased">
-      <nav className="bg-[#151725] border-gray-800 px-4 lg:px-6 py-2.5">
-        <div className="flex flex-wrap justify-between items-center">
-          <div className="flex justify-start items-center">
-            <Link to="/" className="flex mr-4">
-              <img
-                src="https://flowbite.s3.amazonaws.com/logo.svg"
-                className="mr-3 h-8"
-                alt="FlowBite Logo"
-              />
-              <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-                FunHubs
-              </span>
-            </Link>
-            <form action="#" method="POST" className="hidden lg:block lg:pl-2">
-              <label htmlFor="topbar-search" className="sr-only">
-                Search
-              </label>
-              <div className="relative mt-1 lg:w-96">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <svg
-                    className="w-4 h-4 text-gray-500 "
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 20"
-                  >
-                    {" "}
-                    <path
-                      stroke="currentColor"
-                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                    />{" "}
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  name="search"
-                  id="topbar-search"
-                  className="bg-[#1C1E2D] text-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
-                  placeholder="Search"
+    <>
+      <header className="antialiased">
+        <nav className="bg-[#151725] border-gray-800 px-4 lg:px-6 py-2.5">
+          <div className="flex flex-wrap justify-between items-center">
+            <div className="flex justify-start items-center">
+              <Link to="/" className="flex mr-4">
+                <img
+                  src="https://flowbite.s3.amazonaws.com/logo.svg"
+                  className="mr-3 h-8"
+                  alt="FlowBite Logo"
                 />
-              </div>
-            </form>
-          </div>
+                <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
+                  FunHubs
+                </span>
+              </Link>
+              <form onSubmit={handleSearch} className="hidden lg:block lg:pl-2">
+                <label htmlFor="topbar-search" className="sr-only">
+                  Search
+                </label>
+                <div className="relative mt-1 lg:w-96">
+                  <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                    <svg
+                      className="w-4 h-4 text-gray-500 "
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 20"
+                    >
+                      {" "}
+                      <path
+                        stroke="currentColor"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                      />{" "}
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    name="search"
+                    id="topbar-search"
+                    className="bg-[#1C1E2D] text-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                    placeholder="Search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+              </form>
+            </div>
 
-          <div className="flex items-center lg:order-3">
-            <CartButton />
-            <UserHamburger />
+            <div className="flex items-center lg:order-3">
+              <CartButton />
+              <UserHamburger />
+            </div>
           </div>
-        </div>
-      </nav>
-      <nav className="bg-[#151725] border-gray-800 px-4 lg:px-6 py-2.5">
-        <div className="flex items-center justify-between">
-          <div className="flex gap-x-8">
-            <Link
-              to="/products"
-              className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-[#242635]"
-            >
-              <span className="relative text-sm font-medium w-fit block after:block after:content-[''] after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left text-white after:bg-white">
-                Shop
-              </span>
-            </Link>
+        </nav>
+        <nav className="bg-[#151725] border-gray-800 px-4 lg:px-6 py-2.5">
+          <div className="flex items-center justify-between">
+            <div className="flex gap-x-8">
+              <Link
+                to="/products"
+                className="cursor-pointer rounded-sm py-1 px-2 text-sm font-medium hover:bg-[#242635]"
+              >
+                <span className="relative text-sm font-medium w-fit block after:block after:content-[''] after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left text-white after:bg-white">
+                  Shop
+                </span>
+              </Link>
+            </div>
           </div>
-        </div>
-      </nav>
-    </header>
+        </nav>
+      </header>
+      <div className="w-50">
+        {searchResults && (
+          <SearchResults
+            results={searchResults}
+            setSearchResults={setSearchResults}
+            setSearchQuery={setSearchQuery}
+          />
+        )}
+      </div>
+    </>
   );
 }
 function CartButton() {
