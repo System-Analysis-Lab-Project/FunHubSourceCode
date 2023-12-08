@@ -3,8 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { RatingStars } from "../../components/RatingStars";
 import CustomSpinner from "../../components/CustomSpinner";
-// import { useDispatch } from "react-redux";
-// import { addToCart } from "../../slices/cartSlice";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../slices/cartSlice";
 import { toast } from "react-toastify";
 export default function VanDetail() {
   const [product, setProduct] = useState({});
@@ -12,6 +12,7 @@ export default function VanDetail() {
   const [error, setError] = useState(null);
   const [qty, setQty] = useState(1);
   const { id } = useParams();
+  const dispatch = useDispatch();
   useEffect(() => {
     async function fetchProducts() {
       try {
@@ -45,7 +46,10 @@ export default function VanDetail() {
     const value = Math.max(min, Math.min(max, Number(e.target.value)));
     setQty(value);
   }
-  console.log(product);
+  function addToCardHandler() {
+    dispatch(addToCart({ product, qty }));
+    toast.success("Added successfully");
+  }
   return (
     <div>
       <Link
@@ -137,7 +141,7 @@ export default function VanDetail() {
                     type="button"
                     className="mt-20 flex w-full items-center justify-center rounded-md border border-transparent bg-[#FBC02D] px-8 py-3 text-base font-medium text-white hover:bg-[#FBC03D] focus:outline-none focus:ring-2 focus:bg-[#FBC03D] focus:ring-offset-2"
                     disabled={product.countInStock === 0}
-                    // onClick={addToCardHandler}
+                    onClick={addToCardHandler}
                   >
                     Add to bag
                   </button>

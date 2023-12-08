@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 export default function Home() {
   return (
     <div className="relative overflow-hidden bg-blue">
@@ -8,7 +9,11 @@ export default function Home() {
               Best Deals of The Year are Finally Here.
             </h1>
             <p className="mt-4 text-xl text-gray-500">
-            Welcome to FunHub, your ultimate destination for a seamless and thrilling gaming shopping experience. At FunHub, we bring the world of gaming right to your fingertips, offering a comprehensive selection of the latest and greatest video games, accessories, and gear that every gamer dreams of.
+              Welcome to FunHub, your ultimate destination for a seamless and
+              thrilling gaming shopping experience. At FunHub, we bring the
+              world of gaming right to your fingertips, offering a comprehensive
+              selection of the latest and greatest video games, accessories, and
+              gear that every gamer dreams of.
             </p>
           </div>
           <div>
@@ -79,16 +84,16 @@ export default function Home() {
                 </div>
               </div>
 
-              <a
-                href="#"
+              <Link
+                to="/products"
                 className="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-center font-medium text-white hover:bg-indigo-700"
               >
                 Shop Collection
-              </a>
+              </Link>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
