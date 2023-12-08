@@ -12,6 +12,17 @@ module.exports.get_all_products = async (req, res) => {
     });
 };
 
+module.exports.search_by_name = async (req, res) => {
+      const searchName = req.body.name;
+
+      const result = await Product.find({ name: { $regex: searchName, $options: 'i' } })
+      .then((e) => {
+        return res.status(200).json(e);
+      }).catch ((err) => {
+        res.status(500).send({ error: err.message });
+      });
+};
+
 module.exports.get_product_by_id = async (req, res) => {
   var { _id } = req.params;
   _id = new mongoose.Types.ObjectId(_id);

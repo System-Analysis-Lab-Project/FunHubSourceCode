@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../slices/authSlice";
 import { resetCart, clearCartItems } from "../slices/cartSlice";
 export default function Header() {
+
   return (
     <header className="antialiased">
       <nav className="bg-[#151725] border-gray-800 px-4 lg:px-6 py-2.5">
@@ -19,7 +20,7 @@ export default function Header() {
                 FunHubs
               </span>
             </Link>
-            <form action="#" method="GET" className="hidden lg:block lg:pl-2">
+            <form action="#" method="POST" className="hidden lg:block lg:pl-2">
               <label htmlFor="topbar-search" className="sr-only">
                 Search
               </label>
@@ -41,7 +42,7 @@ export default function Header() {
                 </div>
                 <input
                   type="text"
-                  name="email"
+                  name="search"
                   id="topbar-search"
                   className="bg-[#1C1E2D] text-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
                   placeholder="Search"
