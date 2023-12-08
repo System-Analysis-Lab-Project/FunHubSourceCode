@@ -29,7 +29,11 @@ function Login() {
 
   useEffect(() => {
     if (userInfo?.token) {
-      navigate(redirect);
+      if (userInfo?.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate(redirect);
+      }
     }
   }, [navigate, redirect, userInfo]);
 
@@ -40,7 +44,11 @@ function Login() {
       const user = res._doc;
       console.log(user);
       dispatch(setCredentials({ ...user }));
-      navigate(redirect);
+      if (user?.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate(redirect);
+      }
     } catch (err) {
       console.log(err);
       err?.data?.data?.map((er) => toast.error(er.msg));

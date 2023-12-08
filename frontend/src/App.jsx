@@ -8,6 +8,7 @@ import { store } from "./store";
 import { Provider } from "react-redux";
 // components
 import Layout from "./components/Layout";
+import AdminRoute from "./components/AdminRoute";
 // Pages
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -16,6 +17,7 @@ import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
 import Products from "./pages/products/Products";
 import ProductDetails from "./pages/products/ProductDetails";
+import ProductList from "./pages/admin/ProductList";
 import Error from "./pages/Error";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +31,9 @@ const router = createBrowserRouter(
       <Route path="cart" element={<Cart />} />
       <Route path="products" element={<Products />} />
       <Route path="products/:id" element={<ProductDetails />} />
+      <Route path="admin" element={<AdminRoute />}>
+        <Route index element={<ProductList />} />
+      </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
   )
