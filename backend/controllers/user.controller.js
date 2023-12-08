@@ -10,7 +10,9 @@ module.exports.signUp = async (req, res) => {
   password = bcrypt.hashSync(password + config.password, parseInt(config.salt));
   const e = await User.find({ email });
   if (e.length !== 0) {
-    return res.status(409).json({ message: "User found. Please Try another e-mail." });
+    return res
+      .status(409)
+      .json({ message: "User found. Please Try another e-mail." });
   }
 
   role = role || userRoles.USER;
@@ -102,4 +104,37 @@ module.exports.delete_users_by_email = async (req, res) => {
       console.log(err.message);
       return res.status(403).json({ error: err.message });
     });
+};
+module.exports.updateUserProfile = async (req, res) => {
+  const user = await User.findById(req.body.id);
+
+  if (user) {
+    user.firstname = req.body.firstname || user.firstname;
+    user.lastname = req.body.lastname || user.lastname;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      const oldPassword = req.body.password;
+      const newPassword = bcrypt.hashSync(
+        oldPassword + config.oldPassword,
+        parseInt(config.salt)
+      );
+      user.password = newPassword;
+    }
+
+    // not check
+    const updatedUser = await user.save();
+    res.json({
+      _id: updatedUser._id,
+      firstname: updatedUser.firstname,
+      lastname: updatedUser.lastname,
+      email: updatedUser.email,
+      role: updatedUser.role,
+      token: updatedUser.token,
+      createdAt: updatedUser.createdAt,
+      updatedAt: updatedUser.updatedAt,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
 };

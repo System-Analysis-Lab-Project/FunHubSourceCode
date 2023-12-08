@@ -12,6 +12,7 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
 import Products from "./pages/products/Products";
 import ProductDetails from "./pages/products/ProductDetails";
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
+      <Route path="profile" element={<Profile />} />
       <Route path="cart" element={<Cart />} />
       <Route path="products" element={<Products />} />
       <Route path="products/:id" element={<ProductDetails />} />

@@ -30,7 +30,8 @@ module.exports.add_order = async (req, res) => {
 //user
 module.exports.get_My_Orders = async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id });
+    const userId = req.headers["_id"];
+    const orders = await Order.find({ "user._id": userId });
     return res.status(200).json({ orders });
   } catch (err) {
     return res.status(400).json({ msg: err.message });
