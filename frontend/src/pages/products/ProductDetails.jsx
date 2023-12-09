@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { RatingStars } from "../../components/RatingStars";
 import CustomSpinner from "../../components/CustomSpinner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../slices/cartSlice";
 import { toast } from "react-toastify";
 export default function VanDetail() {
@@ -13,6 +13,9 @@ export default function VanDetail() {
   const [qty, setQty] = useState(1);
   const { id } = useParams();
   const dispatch = useDispatch();
+  const [rating, setRating] = useState(0);
+  const { userInfo } = useSelector((state) => state.auth);
+  console.log(userInfo);
   useEffect(() => {
     async function fetchProducts() {
       try {
@@ -36,7 +39,33 @@ export default function VanDetail() {
   if (loading) {
     return <CustomSpinner />;
   }
+  const handleRatingChange = (e) => {
+    const value = Math.max(0, Math.min(5, Number(e.target.value)));
+    setRating(value);
+  };
+  const submitReview = async (e) => {
+    e.preventDefault();
 
+    try {
+      const res = await axios.post(
+        `http://localhost:3000/product/${id}/reviews`,
+        {
+          rating,
+          comment: e.target.feedback.value,
+          userInfo,
+        }
+      );
+      console.log(res);
+      toast.success("Added successfully");
+      window.location.reload();
+    } catch (error) {
+      // Handle error (you may want to show an error message)
+
+      toast.error(error?.response?.data?.message);
+    }
+  };
+
+  console.log(product);
   const hideReviewsText = false;
 
   const min = 1;
@@ -128,7 +157,7 @@ export default function VanDetail() {
                     </div>
                     <p className="sr-only">{product.rating} out of 5 stars</p>
                     <Link
-                      href="."
+                      to="."
                       className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
                     >
                       {product.numReviews} reviews
@@ -161,10 +190,6 @@ export default function VanDetail() {
                 </div>
 
                 <div className="mt-10">
-                  <h3 className="text-sm font-medium text-white">Highlights</h3>
-                </div>
-
-                <div className="mt-10">
                   <h2 className="text-sm font-medium text-white">Details</h2>
 
                   <div className="mt-4 space-y-6">
@@ -176,6 +201,99 @@ export default function VanDetail() {
           </div>
         </div>
       </div>
+      {userInfo.token ? (
+        <>
+          <Reviews product={product} />
+          <form
+            onSubmit={submitReview}
+            className="w-full p-10 flex flex-col ml-5"
+            id="feedbackForm"
+          >
+            <div className="relative  mb-3">
+              <label
+                className="block uppercase text-gray-200 text-xs font-bold mb-2"
+                htmlFor="rating"
+              >
+                Rating
+              </label>
+              <input
+                type="number"
+                name="rating"
+                id="rating"
+                min="0"
+                max="5"
+                step="0.1"
+                value={rating}
+                onChange={handleRatingChange}
+                required
+                className="border-0 px-3 py-3 rounded text-sm shadow 
+                    bg-gray-300 placeholder-black text-gray-800 outline-none focus:bg-gray-400"
+                placeholder="Write a number between 0 - 5"
+              />
+            </div>
+            <div className="relative  mb-3">
+              <label
+                className="block uppercase text-gray-700 text-xs font-bold mb-2"
+                htmlFor="message"
+              >
+                Message
+              </label>
+              <textarea
+                name="feedback"
+                id="feedback"
+                rows="4"
+                cols="80"
+                className="border-0 px-3 py-3 bg-gray-300 placeholder-black text-gray-800 rounded text-sm shadow focus:outline-none "
+                placeholder=""
+                required
+              ></textarea>
+            </div>
+            <div className="mt-6">
+              <button
+                id="feedbackBtn"
+                className="bg-[#FBC02D] text-black text-center mx-auto active:bg-yellow-400 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
+                type="submit"
+              >
+                Write a review
+              </button>
+            </div>
+          </form>
+        </>
+      ) : (
+        <Reviews product={product} />
+      )}
     </div>
+  );
+}
+function Reviews({ product }) {
+  console.log(product.reviews);
+  const reviews = product?.reviews;
+  return (
+    <ul className="p-5 ">
+      {reviews.map((r) => (
+        <>
+          <li className="py-8 text-left  px-4 m-2 ">
+            <div className="flex items-start">
+              <img
+                className="block h-10 w-10 max-w-full justify-self-center  self-center	flex-shrink-0 rounded-full align-middle"
+                src="/assets/avatar.png"
+                alt="avatar"
+              />
+              <div className="ml-3">
+                <p className="mt-5 text-sm font-bold text-white">{r.name}</p>
+                <div className="flex items-center pt-3">
+                  <RatingStars
+                    rating={r.rating}
+                    reviews={product.numReviews}
+                    showText={false}
+                  />
+                </div>
+                <p className="mt-5 text-base text-white">{r.comment}</p>
+              </div>
+            </div>
+          </li>
+        </>
+      ))}
+    </ul>
   );
 }

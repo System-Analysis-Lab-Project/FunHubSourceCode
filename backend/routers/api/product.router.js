@@ -6,6 +6,7 @@ const allowedTo = require("../../middleware/allowedTo");
 router.get("/", productController.get_all_products);
 router.get("/:_id", productController.get_product_by_id);
 router.post("/search", productController.search_by_name);
+router.post("/:id/reviews", productController.CreateProductReview);
 router.post(
   "/",
   verifyToken,
