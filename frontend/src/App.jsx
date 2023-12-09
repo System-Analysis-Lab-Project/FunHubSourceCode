@@ -18,6 +18,7 @@ import Cart from "./pages/Cart";
 import Products from "./pages/products/Products";
 import ProductDetails from "./pages/products/ProductDetails";
 import ProductList from "./pages/admin/ProductList";
+import ProductEdit from "./pages/admin/ProductEdit";
 import Error from "./pages/Error";
 import NotFound from "./pages/NotFound";
 
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
       <Route path="products/:id" element={<ProductDetails />} />
       <Route path="admin" element={<AdminRoute />}>
         <Route index element={<ProductList />} />
+        <Route path="product/:id/edit" element={<ProductEdit />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>

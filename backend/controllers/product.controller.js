@@ -63,21 +63,39 @@ module.exports.add_product = async (req, res) => {
 };
 
 module.exports.update_product = async (req, res) => {
-  const body = req.body;
-  var { _id } = req.params;
-  _id = new mongoose.Types.ObjectId(_id);
-  const isThere = await Product.findById(_id);
-  if (!isThere) {
-    return res.status(404).json("can't update product not found.");
+  try {
+    const {
+      id,
+      name,
+      price,
+      description,
+
+      brand,
+      category,
+      countInStock,
+    } = req.body;
+    console.log(req.body);
+    const product = await Product.findById(id);
+
+    if (product) {
+      product.name = name;
+      product.price = price;
+      product.description = description;
+      product.brand = brand;
+      product.category = category;
+      product.countInStock = countInStock;
+
+      const updatedProduct = await product.save();
+      return res.status(200).json({ data: { updatedProduct } });
+    } else {
+      return res.status(404).json({
+        data: null,
+        msg: "Product not found",
+      });
+    }
+  } catch (err) {
+    return res.status(400).json({ message: err.message });
   }
-  await Product.findByIdAndUpdate(_id, body, { new: true })
-    .then((e) => {
-      return res.status(200).json(e);
-    })
-    .catch((err) => {
-      console.log(err.message);
-      return res.status(401).json(e);
-    });
 };
 
 module.exports.delete_product = async (req, res) => {

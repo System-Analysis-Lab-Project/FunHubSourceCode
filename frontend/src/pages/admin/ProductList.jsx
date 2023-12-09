@@ -4,6 +4,7 @@ import CustomSpinner from "../../components/CustomSpinner";
 import ErrorComponent from "../../components/ErrorComponent";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 export default function ProductList() {
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -149,9 +150,12 @@ export default function ProductList() {
                     <td className="px-6 py-4">{p.category}</td>
                     <td className="px-6 py-4">${p.price}</td>
                     <td className="px-6 py-4 text-right">
-                      <a className="font-medium text-blue-500 hover:underline">
+                      <Link
+                        to={`product/${p._id}/edit`}
+                        className="font-medium text-blue-500 hover:underline"
+                      >
                         Edit
-                      </a>
+                      </Link>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <button
