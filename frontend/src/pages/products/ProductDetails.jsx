@@ -201,7 +201,7 @@ export default function VanDetail() {
           </div>
         </div>
       </div>
-      {userInfo.token ? (
+      {userInfo?.token ? (
         <>
           <Reviews product={product} />
           <form

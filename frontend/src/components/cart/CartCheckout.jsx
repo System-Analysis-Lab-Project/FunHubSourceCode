@@ -23,6 +23,7 @@ export default function CartCheckout({ subs }) {
       });
       setLoading(false);
       toast.success("Your order placed successfully");
+
     } catch (err) {
       console.log(err);
       setLoading(false);
